@@ -21,6 +21,7 @@ public class OrderController {
     @Autowired
     private OrderService service;
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
         OrderDTO dto = service.findById(id);
@@ -28,7 +29,7 @@ public class OrderController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
+    @PreAuthorize("hasAnyRole('ROLE_CLIENT')")
     public ResponseEntity<OrderDTO> insert(@Valid @RequestBody OrderRequestDTO dto) {
         OrderDTO result = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
